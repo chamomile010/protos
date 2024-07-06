@@ -4,7 +4,7 @@ package user;
 
 option go_package = "protos/gen/user";
 
-service GeoProvider {
+service UserServes{
   rpc ListUser (ListUserRequest) returns (ListUserResponse);
   rpc ProfileUser (ProfileUserRequest) returns (ProfileUserResponse);
 }

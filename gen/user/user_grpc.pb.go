@@ -19,128 +19,128 @@ import (
 const _ = grpc.SupportPackageIsVersion8
 
 const (
-	GeoProvider_ListUser_FullMethodName    = "/user.GeoProvider/ListUser"
-	GeoProvider_ProfileUser_FullMethodName = "/user.GeoProvider/ProfileUser"
+	UserServes_ListUser_FullMethodName    = "/user.UserServes/ListUser"
+	UserServes_ProfileUser_FullMethodName = "/user.UserServes/ProfileUser"
 )
 
-// GeoProviderClient is the client API for GeoProvider service.
+// UserServesClient is the client API for UserServes service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type GeoProviderClient interface {
+type UserServesClient interface {
 	ListUser(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserResponse, error)
 	ProfileUser(ctx context.Context, in *ProfileUserRequest, opts ...grpc.CallOption) (*ProfileUserResponse, error)
 }
 
-type geoProviderClient struct {
+type userServesClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewGeoProviderClient(cc grpc.ClientConnInterface) GeoProviderClient {
-	return &geoProviderClient{cc}
+func NewUserServesClient(cc grpc.ClientConnInterface) UserServesClient {
+	return &userServesClient{cc}
 }
 
-func (c *geoProviderClient) ListUser(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserResponse, error) {
+func (c *userServesClient) ListUser(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ListUserResponse)
-	err := c.cc.Invoke(ctx, GeoProvider_ListUser_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserServes_ListUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *geoProviderClient) ProfileUser(ctx context.Context, in *ProfileUserRequest, opts ...grpc.CallOption) (*ProfileUserResponse, error) {
+func (c *userServesClient) ProfileUser(ctx context.Context, in *ProfileUserRequest, opts ...grpc.CallOption) (*ProfileUserResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ProfileUserResponse)
-	err := c.cc.Invoke(ctx, GeoProvider_ProfileUser_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, UserServes_ProfileUser_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// GeoProviderServer is the server API for GeoProvider service.
-// All implementations must embed UnimplementedGeoProviderServer
+// UserServesServer is the server API for UserServes service.
+// All implementations must embed UnimplementedUserServesServer
 // for forward compatibility
-type GeoProviderServer interface {
+type UserServesServer interface {
 	ListUser(context.Context, *ListUserRequest) (*ListUserResponse, error)
 	ProfileUser(context.Context, *ProfileUserRequest) (*ProfileUserResponse, error)
-	mustEmbedUnimplementedGeoProviderServer()
+	mustEmbedUnimplementedUserServesServer()
 }
 
-// UnimplementedGeoProviderServer must be embedded to have forward compatible implementations.
-type UnimplementedGeoProviderServer struct {
+// UnimplementedUserServesServer must be embedded to have forward compatible implementations.
+type UnimplementedUserServesServer struct {
 }
 
-func (UnimplementedGeoProviderServer) ListUser(context.Context, *ListUserRequest) (*ListUserResponse, error) {
+func (UnimplementedUserServesServer) ListUser(context.Context, *ListUserRequest) (*ListUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListUser not implemented")
 }
-func (UnimplementedGeoProviderServer) ProfileUser(context.Context, *ProfileUserRequest) (*ProfileUserResponse, error) {
+func (UnimplementedUserServesServer) ProfileUser(context.Context, *ProfileUserRequest) (*ProfileUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProfileUser not implemented")
 }
-func (UnimplementedGeoProviderServer) mustEmbedUnimplementedGeoProviderServer() {}
+func (UnimplementedUserServesServer) mustEmbedUnimplementedUserServesServer() {}
 
-// UnsafeGeoProviderServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to GeoProviderServer will
+// UnsafeUserServesServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to UserServesServer will
 // result in compilation errors.
-type UnsafeGeoProviderServer interface {
-	mustEmbedUnimplementedGeoProviderServer()
+type UnsafeUserServesServer interface {
+	mustEmbedUnimplementedUserServesServer()
 }
 
-func RegisterGeoProviderServer(s grpc.ServiceRegistrar, srv GeoProviderServer) {
-	s.RegisterService(&GeoProvider_ServiceDesc, srv)
+func RegisterUserServesServer(s grpc.ServiceRegistrar, srv UserServesServer) {
+	s.RegisterService(&UserServes_ServiceDesc, srv)
 }
 
-func _GeoProvider_ListUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserServes_ListUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ListUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GeoProviderServer).ListUser(ctx, in)
+		return srv.(UserServesServer).ListUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: GeoProvider_ListUser_FullMethodName,
+		FullMethod: UserServes_ListUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GeoProviderServer).ListUser(ctx, req.(*ListUserRequest))
+		return srv.(UserServesServer).ListUser(ctx, req.(*ListUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _GeoProvider_ProfileUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _UserServes_ProfileUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(ProfileUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GeoProviderServer).ProfileUser(ctx, in)
+		return srv.(UserServesServer).ProfileUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: GeoProvider_ProfileUser_FullMethodName,
+		FullMethod: UserServes_ProfileUser_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GeoProviderServer).ProfileUser(ctx, req.(*ProfileUserRequest))
+		return srv.(UserServesServer).ProfileUser(ctx, req.(*ProfileUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// GeoProvider_ServiceDesc is the grpc.ServiceDesc for GeoProvider service.
+// UserServes_ServiceDesc is the grpc.ServiceDesc for UserServes service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var GeoProvider_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "user.GeoProvider",
-	HandlerType: (*GeoProviderServer)(nil),
+var UserServes_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "user.UserServes",
+	HandlerType: (*UserServesServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "ListUser",
-			Handler:    _GeoProvider_ListUser_Handler,
+			Handler:    _UserServes_ListUser_Handler,
 		},
 		{
 			MethodName: "ProfileUser",
-			Handler:    _GeoProvider_ProfileUser_Handler,
+			Handler:    _UserServes_ProfileUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
