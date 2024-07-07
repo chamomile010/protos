@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "protos/gen/auth";
+
+service AuthServes {
+  rpc LoginUser(LoginUserRequest) returns (LoginUserResponse);
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+}
+
+message LoginUserRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginUserResponse {
+  string authToken = 1;
+}
+
+message CreateUserRequest {
+  string password = 1;
+  string email = 2;
+  string username = 3;
+}
+
+message CreateUserResponse {}
