@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion8
 const (
 	UserServes_ListUser_FullMethodName    = "/user.UserServes/ListUser"
 	UserServes_ProfileUser_FullMethodName = "/user.UserServes/ProfileUser"
+	UserServes_CreateUser_FullMethodName  = "/user.UserServes/CreateUser"
 )
 
 // UserServesClient is the client API for UserServes service.
@@ -29,6 +30,7 @@ const (
 type UserServesClient interface {
 	ListUser(ctx context.Context, in *ListUserRequest, opts ...grpc.CallOption) (*ListUserResponse, error)
 	ProfileUser(ctx context.Context, in *ProfileUserRequest, opts ...grpc.CallOption) (*ProfileUserResponse, error)
+	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 }
 
 type userServesClient struct {
@@ -59,12 +61,23 @@ func (c *userServesClient) ProfileUser(ctx context.Context, in *ProfileUserReque
 	return out, nil
 }
 
+func (c *userServesClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateUserResponse)
+	err := c.cc.Invoke(ctx, UserServes_CreateUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserServesServer is the server API for UserServes service.
 // All implementations must embed UnimplementedUserServesServer
 // for forward compatibility
 type UserServesServer interface {
 	ListUser(context.Context, *ListUserRequest) (*ListUserResponse, error)
 	ProfileUser(context.Context, *ProfileUserRequest) (*ProfileUserResponse, error)
+	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	mustEmbedUnimplementedUserServesServer()
 }
 
@@ -77,6 +90,9 @@ func (UnimplementedUserServesServer) ListUser(context.Context, *ListUserRequest)
 }
 func (UnimplementedUserServesServer) ProfileUser(context.Context, *ProfileUserRequest) (*ProfileUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProfileUser not implemented")
+}
+func (UnimplementedUserServesServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedUserServesServer) mustEmbedUnimplementedUserServesServer() {}
 
@@ -127,6 +143,24 @@ func _UserServes_ProfileUser_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserServes_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServesServer).CreateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: UserServes_CreateUser_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServesServer).CreateUser(ctx, req.(*CreateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserServes_ServiceDesc is the grpc.ServiceDesc for UserServes service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -141,6 +175,10 @@ var UserServes_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ProfileUser",
 			Handler:    _UserServes_ProfileUser_Handler,
+		},
+		{
+			MethodName: "CreateUser",
+			Handler:    _UserServes_CreateUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion8
 const (
 	AuthServes_LoginUser_FullMethodName  = "/auth.AuthServes/LoginUser"
 	AuthServes_CreateUser_FullMethodName = "/auth.AuthServes/CreateUser"
+	AuthServes_CheckToken_FullMethodName = "/auth.AuthServes/CheckToken"
 )
 
 // AuthServesClient is the client API for AuthServes service.
@@ -29,6 +30,7 @@ const (
 type AuthServesClient interface {
 	LoginUser(ctx context.Context, in *LoginUserRequest, opts ...grpc.CallOption) (*LoginUserResponse, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
+	CheckToken(ctx context.Context, in *CheckTokenRequest, opts ...grpc.CallOption) (*CheckTokenResponse, error)
 }
 
 type authServesClient struct {
@@ -59,12 +61,23 @@ func (c *authServesClient) CreateUser(ctx context.Context, in *CreateUserRequest
 	return out, nil
 }
 
+func (c *authServesClient) CheckToken(ctx context.Context, in *CheckTokenRequest, opts ...grpc.CallOption) (*CheckTokenResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CheckTokenResponse)
+	err := c.cc.Invoke(ctx, AuthServes_CheckToken_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // AuthServesServer is the server API for AuthServes service.
 // All implementations must embed UnimplementedAuthServesServer
 // for forward compatibility
 type AuthServesServer interface {
 	LoginUser(context.Context, *LoginUserRequest) (*LoginUserResponse, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
+	CheckToken(context.Context, *CheckTokenRequest) (*CheckTokenResponse, error)
 	mustEmbedUnimplementedAuthServesServer()
 }
 
@@ -77,6 +90,9 @@ func (UnimplementedAuthServesServer) LoginUser(context.Context, *LoginUserReques
 }
 func (UnimplementedAuthServesServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
+}
+func (UnimplementedAuthServesServer) CheckToken(context.Context, *CheckTokenRequest) (*CheckTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CheckToken not implemented")
 }
 func (UnimplementedAuthServesServer) mustEmbedUnimplementedAuthServesServer() {}
 
@@ -127,6 +143,24 @@ func _AuthServes_CreateUser_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _AuthServes_CheckToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CheckTokenRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(AuthServesServer).CheckToken(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: AuthServes_CheckToken_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(AuthServesServer).CheckToken(ctx, req.(*CheckTokenRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // AuthServes_ServiceDesc is the grpc.ServiceDesc for AuthServes service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -141,6 +175,10 @@ var AuthServes_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateUser",
 			Handler:    _AuthServes_CreateUser_Handler,
+		},
+		{
+			MethodName: "CheckToken",
+			Handler:    _AuthServes_CheckToken_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

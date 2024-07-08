@@ -7,6 +7,7 @@ option go_package = "protos/gen/auth";
 service AuthServes {
   rpc LoginUser(LoginUserRequest) returns (LoginUserResponse);
   rpc CreateUser(CreateUserRequest) returns (CreateUserResponse);
+  rpc CheckToken(CheckTokenRequest) returns (CheckTokenResponse);
 }
 
 message LoginUserRequest {
@@ -25,3 +26,9 @@ message CreateUserRequest {
 }
 
 message CreateUserResponse {}
+
+message CheckTokenRequest {
+  string authToken = 1;
+}
+
+message CheckTokenResponse {}
